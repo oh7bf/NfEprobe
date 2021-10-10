@@ -1,0 +1,34 @@
+#!/usr/bin/gnuplot
+# Gnuplot script to plot E-probe voltage vs field. 
+
+set title "E-probe Voltage"
+set xlabel "Ez[V/m]"
+set ylabel "U[mV]"
+
+set key left top 
+
+set grid
+
+set style line 1 linecolor "red" linewidth 2
+set style line 2 linecolor "blue" linewidth 2
+set style line 3 linecolor "purple" linewidth 2
+set style line 4 linecolor "brown" linewidth 2
+set style line 5 linecolor "forest-green" linewidth 2
+
+f(x) = a*x*x + b*x + c
+
+fit f(x) 'Ecalibration20211009.txt' using 3:4 via a,b,c
+
+#set term png
+#set output "Ecalibration20211009.png"
+set term pdf
+set output "Ecalibration20211009.pdf"
+
+plot "Ecalibration20211009.txt" using 3:4 with linespoints ls 1 title "1815 kHz", \
+     "Ecalibration20211009.txt" using 3:5 with linespoints ls 2 title "3564 kHz", \
+     "Ecalibration20211009.txt" using 3:6 with linespoints ls 4 title "7035 kHz", \
+     "Ecalibration20211009.txt" using 3:7 with linespoints ls 5 title "10110 kHz", \
+     "Ecalibration20211009.txt" using 3:8 with linespoints ls 3 title "14065 kHz"
+#, \
+#  [0:20] f(x) title '1815 kHz fit'
+
